@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Test Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 2rem 0;
+        }
+        main {
+            padding: 2rem;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #005f99;
+        }
+        footer {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Test Website!</h1>
+    </header>
+    <main>
+        <p>This is a simple page hosted on GitHub Pages.</p>
+        <p>Click the button below to see a message:</p>
+        <button onclick="showMessage()">Click Me!</button>
+        <p id="message" style="margin-top: 1rem; font-weight: bold;"></p>
+    </main>
+    <footer>
+        &copy; 2025 My Test Website
+    </footer>
+
+    <script>
+        function showMessage() {
+            document.getElementById('message').textContent = "🎉 It works! Your website is live!";
+        }
+    </script>
+</body>
+</html>
