@@ -48,7 +48,7 @@ a { color:#007acc; text-decoration:underline; }
 <footer>maxfer1810@gmail.com</footer>
 
 <script>
-// Baby/Hacker images cycling
+// Images for spawnable box
 const babyImages = ["baby.jpg", "buchla.png", "hacker.png"];
 let babyIndex = 0;
 
@@ -56,7 +56,7 @@ let babyIndex = 0;
 let clickCount = 0;
 const maxClicks = 4;
 
-// Random modular baby messages
+// Modular baby messages
 const modularMessages = [
     "Modular baby loves patch cables!",
     "This baby prefers Buchla over Moog.",
@@ -65,7 +65,7 @@ const modularMessages = [
     "Tiny fingers, big modular dreams."
 ];
 
-// Random hacker phrases
+// Hacker phrases
 const hackerPhrases = [
     "Access granted... or is it?",
     "Override detected!",
@@ -77,7 +77,7 @@ const hackerPhrases = [
 ];
 
 const customBoxes = [
-    { header:"FM Composition", body:"Are They Stars?", img:"error.jpg", audio:"fm.wav", doc:"FMprog.docx", canSpawn:false },
+    { header:"FM Composition", body:"Are They Stars?", img:"error.jpg", audio:"FM.wav", doc:"FMprog.docx", canSpawn:false },
     { header:"Noise Composition", body:"Mattina", img:"error.jpg", audio:"noise.wav", doc:"Noiseprog.pdf", canSpawn:false },
     { header:"Dangerous Hacker", body:"Beware", img:babyImages[babyIndex], audio:null, doc:null, canSpawn:true }
 ];
@@ -85,12 +85,11 @@ const customBoxes = [
 const existingPositions = [];
 
 function spawnErrors(button, isInitial=false) {
-    // Stop spawning after max clicks
-    if(isInitial) {
+    if(isInitial){
         clickCount++;
         if(clickCount > maxClicks) return;
+        button.onclick = null;
     }
-    if(isInitial) button.onclick = null;
 
     const main = document.getElementById('main-container');
     const buttonWidth=300, buttonHeight=120, spawnRadius=150;
@@ -103,23 +102,21 @@ function spawnErrors(button, isInitial=false) {
         let box = customBoxes[i];
         if(!isInitial && !box.canSpawn) continue;
 
-        // Cycle baby/hacker image
-        if(box.canSpawn) {
+        if(box.canSpawn){
             box.img = babyImages[babyIndex];
             babyIndex = (babyIndex + 1) % babyImages.length;
         }
 
         let extraMessage = "";
-        const imgName = box.img.toLowerCase();
 
-        // Modular message for Buchla
-        if(imgName === "buchla.png") {
+        // Modular message for buchla
+        if(box.img.toLowerCase() === "buchla.png") {
             const msg = modularMessages[Math.floor(Math.random()*modularMessages.length)];
             extraMessage = `<p style="color:#aa0000;"><strong>${msg}</strong></p>`;
         }
 
-        // Hacker phrase for hacker.png
-        if(imgName === "hacker.png") {
+        // Hacker phrase for hacker
+        if(box.img.toLowerCase() === "hacker.png") {
             const phrase = hackerPhrases[Math.floor(Math.random()*hackerPhrases.length)];
             extraMessage = `<p style="color:#00aa00;"><strong>${phrase}</strong></p>`;
         }
