@@ -1,62 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Massimo Ferragamo </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007acc;
-            color: white;
-            padding: 2rem 0;
-        }
-        main {
-            padding: 2rem;
-        }
-        button {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            cursor: pointer;
-            background-color: #007acc;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #005f99;
-        }
-        footer {
-            margin-top: 2rem;
-            padding: 1rem;
-            background-color: #e0e0e0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Massimo Ferragamo</title>
+<style>
+html, body { height:100%; margin:0; padding:0; position:relative; overflow:hidden; }
+body { font-family:Arial,sans-serif; text-align:center; background-color:transparent; background-image:url('feet.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat; color:white; }
+footer { padding:1rem; background-color:transparent; }
+.error-box { background-color:#f5f0e1; border:1px solid #a0a0a0; border-radius:4px; width:300px; box-shadow:2px 2px 6px rgba(0,0,0,0.4); text-align:left; overflow:hidden; user-select:none; }
+.error-header { background-color:#007acc; color:white; font-weight:bold; padding:0.5rem; box-sizing:border-box; }
+.error-body { display:flex; flex-direction:column; align-items:flex-start; padding:0.5rem; color:black; gap:0.25rem; }
+.error-body img { width:50px; height:50px; }
+.error-body-text p { margin:0; line-height:1.2; }
+.error-button { display:flex; flex-direction:column; cursor:grab; border:none; background:none; padding:0; position:absolute; }
+.error-button:active { cursor:grabbing; box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080; }
+a { color:#007acc; text-decoration:underline; }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Test Website!</h1>
-    </header>
-    <main>
-        <p>This is a simple page hosted on GitHub Pages.</p>
-        <p>Click the button below to see a message:</p>
-        <button onclick="showMessage()">Click Me!</button>
-        <p id="message" style="margin-top: 1rem; font-weight: bold;"></p>
-    </main>
-    <footer>
-        &copy; 2025 My Test Website
-    </footer>
 
-    <script>
-        function showMessage() {
-            document.getElementById('message').textContent = "🎉 It works! Your website is live!";
+<header class="error-box" style="margin:1rem auto; position:relative;">
+    <div class="error-header">maxfer1810@gmail.com</div>
+    <div class="error-body">
+        <img src="error.png" alt="Error Icon">
+        <div class="error-body-text">
+            <p>Is this a music page?</p>
+        </div>
+    </div>
+</header>
+
+<main id="main-container" style="position:relative; flex:1;">
+    <button class="error-button" id="initial-button" onclick="spawnErrors(this, true)">
+        <div class="error-box">
+            <div class="error-header">Error!</div>
+            <div class="error-body">
+                <img src="error.png" alt="Error Icon">
+                <div class="error-body-text">
+                    <p><strong>Failed to load wav file</strong></p>
+                    <p>restart your browser</p>
+                </div>
+            </div>
+        </div>
+    </button>
+</main>
+
+
+<script>
+// Baby/Hacker images cycling
+const babyImages = ["baby.jpg", "Buchla.png", "Hacker.png"];
+let babyIndex = 0;
+
+// Click counter
+let clickCount = 0;
+const maxClicks = 4;
+
+// Random modular baby messages
+const modularMessages = [
+    "Modular baby loves patch cables!",
+    "This baby prefers Buchla over Moog.",
+    "Beware: baby is generating random CV signals!",
+    "Patch this baby into your synth setup.",
+    "Tiny fingers, big modular dreams."
+];
+
+// Random hacker phrases
+const hackerPhrases = [
+    "Access granted... or is it?",
+    "Override detected!",
+    "System breach in progress!",
+    "The hacker watches.",
+    "Encryption cracked successfully.",
+    "Compiling chaos...",
+    "Anonymous strikes again."
+];
+
+const customBoxes = [
+    { header:"FM Composition", body:"Are They Stars?", img:"error.png", audio:"FM.wav", doc:"FMprog.docx", canSpawn:false },
+    { header:"Noise Composition", body:"Mattina", img:"error.png", audio:"noise.wav", doc:"Noiseprog.pdf", canSpawn:false },
+    { header:"Dangerous Hacker", body:"Beware", img:babyImages[babyIndex], audio:null, doc:null, canSpawn:true }
+];
+
+const existingPositions = [];
+
+function spawnErrors(button, isInitial=false) {
+    // Stop spawning after max clicks
+    if(isInitial) {
+        clickCount++;
+        if(clickCount > maxClicks) return;
+    }
+    if(isInitial) button.onclick = null;
+
+    const main = document.getElementById('main-container');
+    const buttonWidth=300, buttonHeight=120, spawnRadius=150;
+    const header = document.querySelector('header');
+    const headerHeight = header.offsetHeight;
+    const centerX = window.innerWidth/2;
+    const centerY = window.innerHeight/2 - headerHeight/2;
+
+    for(let i=0;i<customBoxes.length;i++){
+        let box = customBoxes[i];
+        if(!isInitial && !box.canSpawn) continue;
+
+        // Cycle baby/hacker image for spawnable box
+        if(box.canSpawn) {
+            box.img = babyImages[babyIndex];
+            babyIndex = (babyIndex + 1) % babyImages.length;
         }
-    </script>
+
+        let extraMessage = "";
+
+        // Modular message for Buchla
+        if(box.img === "Buchla.png") {
+            const msg = modularMessages[Math.floor(Math.random()*modularMessages.length)];
+            extraMessage = `<p style="color:#aa0000;"><strong>${msg}</strong></p>`;
+        }
+
+        // Hacker phrase for Hacker.png
+        if(box.img === "Hacker.png") {
+            const phrase = hackerPhrases[Math.floor(Math.random()*hackerPhrases.length)];
+            extraMessage = `<p style="color:#00aa00;"><strong>${phrase}</strong></p>`;
+        }
+
+        const newButton = document.createElement('button');
+        newButton.className='error-button';
+        newButton.innerHTML = `
+            <div class="error-box">
+                <div class="error-header">${box.header}</div>
+                <div class="error-body">
+                    <img src="${box.img}" alt="Icon">
+                    <div class="error-body-text">
+                        <p>${box.body}</p>
+                        ${extraMessage}
+                        ${box.audio? `<audio src="${box.audio}" controls></audio>` : ""}
+                        ${box.doc? `<p><a href="${box.doc}" target="_blank">${box.doc}</a></p>` : ""}
+                    </div>
+                </div>
+            </div>
+        `;
+        if(box.canSpawn) newButton.onclick = ()=>spawnErrors(newButton);
+
+        let left, top, attempts=0, maxAttempts=100;
+        do{
+            left = centerX - buttonWidth/2 + (Math.random()*spawnRadius*2 - spawnRadius);
+            top = centerY - buttonHeight/2 + (Math.random()*spawnRadius*2 - spawnRadius);
+            left = Math.max(0, Math.min(left, window.innerWidth - buttonWidth));
+            top = Math.max(0, Math.min(top, window.innerHeight - buttonHeight));
+            attempts++;
+        }while(checkOverlap(left,top,buttonWidth,buttonHeight) && attempts<maxAttempts);
+
+        newButton.style.left = left+'px';
+        newButton.style.top = top+'px';
+        existingPositions.push({left,top,width:buttonWidth,height:buttonHeight});
+        makeDraggable(newButton);
+        main.appendChild(newButton);
+    }
+}
+
+function checkOverlap(x,y,w,h){ 
+    for(const pos of existingPositions){ 
+        if(!(x+w<pos.left||x>pos.left+pos.width||y+h<pos.top||y>pos.top+pos.height)) return true;
+    } 
+    return false; 
+}
+
+function makeDraggable(el){
+    let offsetX=0, offsetY=0, isDragging=false;
+    const box=el.querySelector('.error-box');
+    box.addEventListener('mousedown', e=>{
+        isDragging=true;
+        offsetX = e.clientX - el.offsetLeft;
+        offsetY = e.clientY - el.offsetTop;
+        el.style.zIndex=1000;
+    });
+    document.addEventListener('mousemove', e=>{
+        if(!isDragging) return;
+        let left = e.clientX - offsetX;
+        let top = e.clientY - offsetY;
+        left = Math.max(0, Math.min(left, window.innerWidth - el.offsetWidth));
+        top = Math.max(0, Math.min(top, window.innerHeight - el.offsetHeight));
+        el.style.left = left+'px';
+        el.style.top = top+'px';
+    });
+    document.addEventListener('mouseup', ()=>{
+        if(isDragging) isDragging=false;
+        el.style.zIndex='';
+    });
+}
+
+window.onload = ()=>{
+    const initial=document.getElementById('initial-button');
+    const buttonWidth=300, buttonHeight=120, spawnRadius=150;
+    const header = document.querySelector('header');
+    const headerHeight = header.offsetHeight;
+    const centerX = window.innerWidth/2;
+    const centerY = window.innerHeight/2 - headerHeight/2;
+
+    let left = centerX - buttonWidth/2 + (Math.random()*spawnRadius*2 - spawnRadius);
+    let top = centerY - buttonHeight/2 + (Math.random()*spawnRadius*2 - spawnRadius);
+
+    left = Math.max(0, Math.min(left, window.innerWidth - buttonWidth));
+    top = Math.max(0, Math.min(top, window.innerHeight - buttonHeight));
+
+    initial.style.left = left+'px';
+    initial.style.top = top+'px';
+    existingPositions.push({left,top,width:buttonWidth,height:buttonHeight});
+    makeDraggable(initial);
+};
+</script>
+
 </body>
 </html>
